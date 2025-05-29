@@ -35,7 +35,7 @@ const Login = () => {
             type="password"
             placeholder='Enter your password'
           />
-          <div className='text-red-600'>{loginError? loginError : ''}</div>
+          {loginError && <div className='text-red-600'>{loginError.message}</div>}
           <button onClick={handleLogin} className='cursor-pointer bg-[#4c4c96] hover:bg-[#363669] text-white font-semibold py-2 rounded-md transition'>
             Login
           </button>
