@@ -114,12 +114,6 @@ useEffect(() => {
 
   useEffect(() => {
     const start = async () => {
-      if(!socket) {
-        console.log('socket is undefined');
-      }
-      else {
-        console.log("IT IS THERE");
-      }
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       localVideo.current.srcObject = stream;
       try {
@@ -143,13 +137,13 @@ useEffect(() => {
       });
 
       socket?.on('receive-offer', async ({ offer, from }) => {
-        console.log("OFFER:", offer);
+        console.log("OFFER Received");
         const answer = await createAnswer({ offer, from, localStream: localVideo.current.srcObject });
         socket.emit('answer', { answer, to: from });
       });
 
       socket?.on('receive-answer', async ({ answer, from }) => {
-        console.log("ANSWER:", answer);
+        console.log("ANSWER RECEIVED");
         await handleRemoteAnswer({ answer, from });
       });
 
