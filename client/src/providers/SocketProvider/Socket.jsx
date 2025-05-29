@@ -9,7 +9,10 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = (props) => {
     const { authUser } = useAuth();
 
-    const socket = useMemo(() => io('http://localhost:5000'), []);
+    const socket = useMemo(() => {
+        const URL = import.meta.env.NODE_ENV === "production"? undefined : import.meta.env.VITE_SOCKET_SERVER_URL;
+        io(URL)
+    }, []);
 
     return (
         <SocketContext.Provider value={{socket}}>
