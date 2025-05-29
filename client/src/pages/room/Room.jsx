@@ -112,6 +112,9 @@ useEffect(() => {
 
 
   useEffect(() => {
+    if(!socket) {
+      return <div>Connecting</div>
+    }
     const start = async () => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       localVideo.current.srcObject = stream;
