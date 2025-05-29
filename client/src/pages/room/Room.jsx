@@ -32,6 +32,7 @@ function Room({onMinimize}) {
 
   const remoteVideoRefs = useRef({});
 
+
 useEffect(() => {
   Object.entries(remoteStreams).forEach(([id, stream]) => {
     if (remoteVideoRefs.current[id]) {
@@ -92,7 +93,7 @@ useEffect(() => {
   const handleLeave = async() => {
     try {
       await leaveMeeting({slug: roomId});
-      socket.emit('left-meeting', {roomId});
+      socket?.emit('left-meeting', {roomId});
       navigate('/');
     } catch (error) {
       console.log(error.message);
@@ -102,7 +103,7 @@ useEffect(() => {
   const handleEnd = async() => {
     try {
       await endMeeting({slug: roomId});
-      socket.emit('end-meeting', {roomId});
+      socket?.emit('end-meeting', {roomId});
       await removeAllPeers();
       navigate('/');
     } catch (error) {
@@ -112,10 +113,13 @@ useEffect(() => {
 
 
   useEffect(() => {
-    if(!socket) {
-      return <div>Connecting</div>
-    }
     const start = async () => {
+      if(!socket) {
+        console.log('socket is undefined');
+      }
+      else {
+        console.log("IT IS THERE");
+      }
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       localVideo.current.srcObject = stream;
       try {
@@ -125,11 +129,11 @@ useEffect(() => {
         setError(error);
       }
 
-      socket.emit('join-room', { emailId: authUser?.email, roomId });
-      socket.on('user-joined', async ({ socketId, emailId }) => {
+      socket?.emit('join-room', { emailId: authUser?.email, roomId });
+      socket?.on('user-joined', async ({ socketId, emailId }) => {
         console.log(socketId);
         const offer = await createOffer({ localStream: localVideo.current.srcObject, socketId });
-        socket.emit('offer', { offer, to: socketId });
+        socket?.emit('offer', { offer, to: socketId });
         try {
           const currMeeting = await getMeetingDetails({slug: roomId});
           setCurrentMeeting(currMeeting);
@@ -138,20 +142,22 @@ useEffect(() => {
         }
       });
 
-      socket.on('receive-offer', async ({ offer, from }) => {
+      socket?.on('receive-offer', async ({ offer, from }) => {
+        console.log("OFFER:", offer);
         const answer = await createAnswer({ offer, from, localStream: localVideo.current.srcObject });
         socket.emit('answer', { answer, to: from });
       });
 
-      socket.on('receive-answer', async ({ answer, from }) => {
+      socket?.on('receive-answer', async ({ answer, from }) => {
+        console.log("ANSWER:", answer);
         await handleRemoteAnswer({ answer, from });
       });
 
-      socket.on('receive-ice-candidate', async ({ candidate, from }) => {
+      socket?.on('receive-ice-candidate', async ({ candidate, from }) => {
         await handleIceCandidate({ candidate, from });
       });
 
-      socket.on('user-left-meeting', async({socketId}) => {
+      socket?.on('user-left-meeting', async({socketId}) => {
         await removePeer({ socketId });
         try {
           const currMeeting = await getMeetingDetails({slug: roomId});
@@ -161,13 +167,13 @@ useEffect(() => {
         }
       });
 
-      socket.on('meeting-ended', async(roomId) => {
+      socket?.on('meeting-ended', async(roomId) => {
         await removeAllPeers();
         navigate('/');
         toast.success('Meeting Ended');
       });
 
-      socket.on('user-disconnected', async ({ socketId }) => {
+      socket?.on('user-disconnected', async ({ socketId }) => {
         await removePeer({ socketId });
         try {
           const currMeeting = await getMeetingDetails({slug: roomId});
