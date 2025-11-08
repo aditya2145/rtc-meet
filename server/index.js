@@ -6,6 +6,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const { connectMongoDB } = require('./db/connectMongoDB.js');
+const { errorHandler } = require('./middlewares/errorHandler.js');
 
 const userRoute = require('./routes/auth.route.js');
 const roomRoute = require('./routes/room.route.js');
@@ -35,6 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/users', userRoute);
 app.use('/api/rooms', roomRoute);
+
+app.use(errorHandler);
 
 io.on('connection', (socket) => {
     console.log('New client connected:', socket.id);
