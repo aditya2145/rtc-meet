@@ -212,10 +212,10 @@ useEffect(() => {
         </div>
       </header>
 
-      <div className='flex'>
-        <div className={`p-4 ${viewParticipants? 'w-[75%]' : 'w-full'}`}>
+      <div className='flex flex-col gap-3'>
+        <div className={`p-4 ${viewParticipants? 'w-[75%]' : 'w-full'} flex gap-1`}>
           <video ref={localVideo} autoPlay muted playsInline className='w-[20rem] rounded-lg overflow-hidden' />
-          {remoteStreams && <div className='flex flex-wrap'>
+          {remoteStreams && <div className='flex gap-1 flex-wrap'>
             {Object.entries(remoteStreams).map(([id, stream]) => (
               <video
                 key={id}
@@ -224,7 +224,7 @@ useEffect(() => {
                 ref={(el) => {
                   if (el) remoteVideoRefs.current[id] = el;
                 }}
-                style={{ width: 300, margin: 10 }}
+                className='w-[20rem] rounded-lg overflow-hidden'
               />
             ))}
           </div>

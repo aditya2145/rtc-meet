@@ -9,7 +9,7 @@ export const useSocket = () => useContext(SocketContext);
 export const SocketProvider = (props) => {
     const { authUser } = useAuth();
 
-    const socket = useMemo(() => io(), []);
+    const socket = useMemo(() => io('http://localhost:5000'), []);
 
     return (
         <SocketContext.Provider value={{socket}}>
