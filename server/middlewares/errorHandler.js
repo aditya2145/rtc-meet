@@ -1,4 +1,4 @@
-import { ApiError } from "../utils/ApiError";
+const { ApiError } = require("../utils/ApiError");
 
 const errorHandler = (err, req, res, next) => {
     console.error("Error:", err);
