@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext(null);
 
-
 export const AuthProvider = (props) => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();

@@ -1,13 +1,11 @@
+import { handleApiResponse } from "../../utils/handlerApiResponse";
+
 export const getMeService = async () => {
     const res = await fetch('/api/users/me', {
         credentials: "include",
     });
-    const data = await res.json();
-
-    if (!res.ok) {
-        throw new Error(data.message || "Something went wrong");
-    }
-    return data;
+    
+    return handleApiResponse(res);
 }
 
 export const logoutService = async () => {
@@ -15,11 +13,8 @@ export const logoutService = async () => {
         method: "POST",
         credentials: "include",
     });
-    const data = await res.json();
-    if (!res.ok) {
-        throw new Error(data.message || "Something went wrong");
-    }
-    return data;
+
+    return handleApiResponse(res);
 }
 
 export const loginService = async (formData) => {
@@ -29,13 +24,9 @@ export const loginService = async (formData) => {
             'Content-Type': "application/json",
         },
         body: JSON.stringify(formData),
-    })
-    const data = await res.json();
+    });
 
-    if (!res.ok) {
-        throw new Error(data.message || "Something went wrong");
-    }
-    return data;
+    return handleApiResponse(res);
 }
 
 export const signupService = async (formData) => {
@@ -47,9 +38,5 @@ export const signupService = async (formData) => {
         body: JSON.stringify(formData),
     });
 
-    const data = await res.json();
-    if (!res.ok) {
-        throw new Error(data.message || "Something went wrong");
-    }
-    return data;
+    return handleApiResponse(res);
 }

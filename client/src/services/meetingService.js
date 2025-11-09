@@ -1,127 +1,71 @@
-export const getAllMeetings = async(meetingStatus) => {
-    try {
-        const res = await fetch(`/api/rooms/${meetingStatus}`);
-        const data = await res.json();
-        if(!res.ok) {
-            throw new Error(data.message || "Something went wrong");
-        }
-        return data;
-    } catch (error) {
-        throw (error.message);
-    }
+import { handleApiResponse } from "../../utils/handlerApiResponse";
+
+export const getAllMeetings = async (meetingStatus) => {
+    const res = await fetch(`/api/rooms/${meetingStatus}`);
+    return handleApiResponse(res);
 };
 
-export const joinMeeting = async({roomId}) => {
-    try {
-        const res = await fetch('/api/rooms/join', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({slug: roomId}),
-        });
+export const joinMeeting = async ({ roomId }) => {
+    const res = await fetch('/api/rooms/join', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ slug: roomId }),
+    });
 
-        const data = await res.json();
-        if(!res.ok) {
-            throw new Error(data.message || "Something went wrong");
-        }
-        return data;
-
-    } catch (error) {
-        throw new Error(error.message);
-    }
+    return handleApiResponse(res);
 };
 
-export const scheduleMeeting = async(meetingData) => {
-    try {
-        const res = await fetch('/api/rooms/schedule', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(meetingData),
-        });
-        const data = await res.json();
+export const scheduleMeeting = async (meetingData) => {
+    const res = await fetch('/api/rooms/schedule', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(meetingData),
+    });
 
-        if(!res.ok) {
-            throw new Error(data.message || "Something went wrong");
-        }
-        return data;
-    } catch (error) {
-        throw (error.message);
-    }
+    return handleApiResponse(res);
 };
 
-export const createMeeting = async(meetingData) => {
-    try {
-        const res = await fetch('/api/rooms/newMeeting', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(meetingData),
-        });
-        const data = await res.json();
+export const createMeeting = async (meetingData) => {
+    const res = await fetch('/api/rooms/newMeeting', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(meetingData),
+    });
 
-        if(!res.ok) {
-            throw new Error(data.message || "Something went wrong");
-        }
-        return data;
-    } catch (error) {
-        throw (error.message);
-    }
+    return handleApiResponse(res);
 };
 
-export const leaveMeeting = async({slug}) => {
-    try {
-        const res = await fetch('/api/rooms/leave', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({slug}),
-        });
-        const data = await res.json();
+export const leaveMeeting = async ({ slug }) => {
+    const res = await fetch('/api/rooms/leave', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ slug }),
+    });
 
-        if(!res.ok) {
-            throw new Error(data.error || "Something went wrong");
-        }
-        return data;
-    } catch (error) {
-        throw (error.message);
-    }
+    return handleApiResponse(res);
 };
 
-export const endMeeting = async({slug}) => {
-    try {
-        const res = await fetch('/api/rooms/endMeeting', {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({slug}),
-        });
-        const data = await res.json();
+export const endMeeting = async ({ slug }) => {
+    const res = await fetch('/api/rooms/endMeeting', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ slug }),
+    });
 
-        if(!res.ok) {
-            throw new Error(data.error || "Something went wrong");
-        }
-        return data;
-    } catch (error) {
-        throw (error.message);
-    }
+    return handleApiResponse(res);
 };
 
-export const getMeetingDetails = async({slug}) => {
-    try {
-        const res = await fetch(`/api/rooms/meeting/${slug}`);
-        const data = await res.json();
-
-        if(!res.ok) {
-            throw new Error(data.error || "Something went wrong");
-        }
-        return data;
-    } catch (error) {
-        throw new Error(error.message);
-    }
+export const getMeetingDetails = async ({ slug }) => {
+    const res = await fetch(`/api/rooms/meeting/${slug}`);
+    return handleApiResponse(res);
 };
